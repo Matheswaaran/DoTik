@@ -8,6 +8,8 @@ const List = props => {
       <ScrollView style={styles.scroll_view}>
         <ListItem />
         <ListItem />
+				<ListItem />
+				<ListItem />
       </ScrollView>
     </View>
   );
