@@ -1,12 +1,12 @@
-import { Database } from "@nozbe/watermelondb";
+import {Database} from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
-import Schema from "./schema";
-import Users from "./users";
-import Tasks from "./tasks";
+import Schema from './schema';
+import Users from './users';
+import Tasks from './tasks';
 
 const adapter = new SQLiteAdapter({
   dbName: 'DoTik',
-  schema: Schema
+  schema: Schema,
 });
 
 const database = new Database({
@@ -15,4 +15,4 @@ const database = new Database({
   actionsEnabled: true,
 });
 
-export { database };
+export {database};
