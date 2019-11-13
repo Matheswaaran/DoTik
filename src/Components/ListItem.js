@@ -4,8 +4,8 @@ import {StyleSheet, View, Text} from 'react-native';
 const ListItem = props => {
   return (
     <View style={styles.list_item_container}>
-      <Text style={styles.list_item_name}>React Native Frontend</Text>
-      <Text style={styles.list_item_time}>13:00</Text>
+      <Text style={styles.list_item_name}>{props.task.task_name}</Text>
+      <Text style={styles.list_item_time}>{props.task.task_time}</Text>
     </View>
   );
 };

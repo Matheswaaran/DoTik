@@ -4,6 +4,7 @@ import Moment from 'moment';
 import {database} from './Model/database';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import List from './Components/List';
+import tasks from './tasks';
 
 class App extends React.Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class App extends React.Component {
         name: 'Rockin MAT',
       },
       current_date: Date.now(),
-      tasks: [],
+      tasks: tasks.tasks,
     };
   }
 
@@ -27,9 +28,13 @@ class App extends React.Component {
     console.log('deleteTask');
   };
 
-  markTaskAsDone = () => {
+  markTaskAsDone = (index) => {
     console.log('markTaskAsDone');
   };
+	
+	onTaskClickHandler = (index) => {
+		console.log("onTaskClickHandler", index);
+	};
 
   componentDidMount() {
     this.fetchTasks();
@@ -73,6 +78,7 @@ class App extends React.Component {
                 <List
                   tasks={this.state.tasks}
                   refresh={this.fetchTasks}
+									onClick={this.onTaskClickHandler}
                   swipeLeft={this.deleteTask}
                   swipeRight={this.markTaskAsDone}
                 />
