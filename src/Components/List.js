@@ -1,24 +1,26 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, TouchableNativeFeedback} from 'react-native';
+import React from 'react';
+import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import ListItem from './ListItem';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const List = props => {
-  const [refresh, setRefresh] = useState(false);
+  let data = props.tasks.map((data, i) => ({ ...data, key: `${i}` }));
   return (
     <View style={styles.list_container}>
       <SwipeListView
         useFlatList={true}
-        data={props.tasks}
+        data={data}
         leftOpenValue={40}
         rightOpenValue={-40}
+        previewRowKey="0"
+        onRowOpen={(rowKey, rowMap, toValue) => console.log(rowKey, rowMap, toValue)}
         renderItem={(data, rowMap) => (
-          <TouchableNativeFeedback key={data.index} onPress={() => props.onClick(data.index)}>
+          <TouchableWithoutFeedback onPress={() => props.onClick(data.index)}>
             <View style={styles.list_item}>
               <ListItem task={data.item} />
             </View>
-          </TouchableNativeFeedback>
+          </TouchableWithoutFeedback>
         )}
         renderHiddenItem={(data, rowMap) => (
           <View style={styles.hidden_container}>
