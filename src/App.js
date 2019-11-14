@@ -55,12 +55,16 @@ class App extends React.Component {
     });
   };
 
-  deleteTask = () => {
-    console.log('deleteTask');
+  deleteTask = (index) => {
+    console.log('deleteTask', index);
   };
 
   markTaskAsDone = (index) => {
-    console.log('markTaskAsDone');
+    console.log('markTaskAsDone', index);
+    let stateCopy = { ...this.state };
+    stateCopy.tasks[index].is_active = !stateCopy.tasks[index].is_active;
+    console.log(stateCopy);
+    this.setState(stateCopy);
   };
 	
 	onTaskClickHandler = (index) => {

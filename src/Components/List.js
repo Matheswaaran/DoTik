@@ -5,7 +5,19 @@ import ListItem from './ListItem';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const List = props => {
+  console.log(props.tasks);
+  
   let data = props.tasks.map((data, i) => ({ ...data, key: `${i}` }));
+
+  const onRowChange = (rowKey, rowMap, toValue) => {
+    if(toValue > 0) {
+      props.swipeRight(rowKey);
+    } else {
+      props.swipeLeft(rowKey);
+    }
+    rowMap[rowKey].closeRow();
+  };
+
   return (
     <View style={styles.list_container}>
       <SwipeListView
@@ -14,7 +26,7 @@ const List = props => {
         leftOpenValue={40}
         rightOpenValue={-40}
         previewRowKey="0"
-        onRowOpen={(rowKey, rowMap, toValue) => console.log(rowKey, rowMap, toValue)}
+        onRowOpen={onRowChange}
         renderItem={(data, rowMap) => (
           <TouchableWithoutFeedback onPress={() => props.onClick(data.index)}>
             <View style={styles.list_item}>
