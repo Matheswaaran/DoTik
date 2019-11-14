@@ -1,22 +1,24 @@
 import React from 'react';
-import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import ListItem from './ListItem';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const List = props => {
-  console.log(props.tasks);
-  
   let data = props.tasks.map((data, i) => ({ ...data, key: `${i}` }));
 
   const onRowChange = (rowKey, rowMap, toValue) => {
+    rowMap[rowKey].closeRow();
     if(toValue > 0) {
       props.swipeRight(rowKey);
     } else {
-      props.swipeLeft(rowKey);
+      setTimeout(() => {
+        props.swipeLeft(rowKey);
+      }, 1000)
     }
-    rowMap[rowKey].closeRow();
   };
+
+  console.log(Dimensions.get('window').height - 350);
 
   return (
     <View style={styles.list_container}>
@@ -47,7 +49,7 @@ const List = props => {
 
 const styles = StyleSheet.create({
   list_container: {
-    height: 320,
+    height: Dimensions.get('window').height - 320,
   },
   scroll_view: {
     backgroundColor: '#FFFFFF',

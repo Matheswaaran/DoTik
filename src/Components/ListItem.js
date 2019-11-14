@@ -4,8 +4,8 @@ import {StyleSheet, View, Text} from 'react-native';
 const ListItem = props => {
   return (
     <View style={styles.list_item_container}>
-      <Text style={{ color: '#373C4F', textDecorationLine: props.is_active ? 'line-through' : 'none'}}>{props.task.task_name}</Text>
-      <Text style={{ color: '#373C4F', textDecorationLine: props.is_active ? 'line-through' : 'none'}}>{props.task.task_time}</Text>
+      <Text style={{ color: '#373C4F', textDecorationLine: props.task.is_active ? 'none' : 'line-through'}}>{props.task.task_name}</Text>
+      <Text style={{ color: '#373C4F', textDecorationLine: props.task.is_active ? 'none' : 'line-through'}}>{props.task.task_time}</Text>
     </View>
   );
 };

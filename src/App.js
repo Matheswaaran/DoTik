@@ -4,6 +4,7 @@ import Moment from 'moment';
 import {database} from './Model/database';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import List from './Components/List';
+import Header from './Components/Header';
 import tasks from './tasks';
 
 class App extends React.Component {
@@ -11,7 +12,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       user_details: {
-        name: 'Rockin MAT',
+        name: 'User Name',
       },
       current_date: Moment().format("DD-M-YYYY"),
       tasks: tasks.tasks,
@@ -22,6 +23,10 @@ class App extends React.Component {
     const tasks_collection = database.collections.get('tasks');
     const all_tasks = await tasks_collection.query().fetch();
     console.log(all_tasks);
+  };
+
+  fetchUserData = async () => {
+    console.log('fetchUserData');
   };
 
   onChangeDate = async () => {
@@ -56,14 +61,14 @@ class App extends React.Component {
   };
 
   deleteTask = (index) => {
-    console.log('deleteTask', index);
+    let stateCopy = { ...this.state };
+    stateCopy.tasks.splice(index, 1);
+    this.setState(stateCopy);
   };
 
   markTaskAsDone = (index) => {
-    console.log('markTaskAsDone', index);
     let stateCopy = { ...this.state };
     stateCopy.tasks[index].is_active = !stateCopy.tasks[index].is_active;
-    console.log(stateCopy);
     this.setState(stateCopy);
   };
 	
@@ -78,11 +83,10 @@ class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.name_container}>
-          <Text />
-          <Text style={styles.user_name}>{this.state.user_details.name}</Text>
-          <Icon name="settings-outline" size={21} color="#FFFFFF" />
-        </View>
+        <Header
+          user_details={this.state.user_details}
+          fetchData={this.fetchUserData}
+        />
         <View style={styles.card_container1}>
           <View style={styles.card_container2}>
             <View style={styles.card_container3}>
@@ -147,19 +151,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  name_container: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-    padding: 24,
-    paddingBottom: 0,
-  },
-  user_name: {
-    color: '#FFFFFF',
-    fontSize: 24,
   },
   card_container1: {
     display: 'flex',
