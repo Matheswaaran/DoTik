@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableNativeFeedback, Platform, DatePickerAndroid} from 'react-native';
 import Moment from 'moment';
 import {database} from './Model/database';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -13,7 +13,7 @@ class App extends React.Component {
       user_details: {
         name: 'Rockin MAT',
       },
-      current_date: Date.now(),
+      current_date: Moment().format("DD-M-YYYY"),
       tasks: tasks.tasks,
     };
   }
@@ -22,6 +22,37 @@ class App extends React.Component {
     const tasks_collection = database.collections.get('tasks');
     const all_tasks = await tasks_collection.query().fetch();
     console.log(all_tasks);
+  };
+
+  onChangeDate = async () => {
+    if(Platform.OS === "android"){
+      try {
+        const {action, year, month, day} = await DatePickerAndroid.open({
+          date: new Date(Moment(this.state.current_date, "DD-M-YYYY").valueOf()),
+        });
+        if (action !== DatePickerAndroid.dismissedAction) {
+          this.setState({
+            current_date: `${day}-${month + 1}-${year}`
+          });
+        }
+      } catch ({code, message}) {
+        console.warn('Cannot open date picker', message);
+      }
+    } else if (Platform.OS === "ios") {
+
+    }
+  };
+
+  onChangeDateForward = () => {
+    this.setState({
+      current_date: Moment(this.state.current_date, "DD-M-YYYY").add(1, 'day').format("DD-M-YYYY"),
+    });
+  };
+
+  onChangeDateBackward = () => {
+    this.setState({
+      current_date: Moment(this.state.current_date, "DD-M-YYYY").subtract(1, 'day').format("DD-M-YYYY"),
+    });
   };
 
   deleteTask = () => {
@@ -52,26 +83,28 @@ class App extends React.Component {
           <View style={styles.card_container2}>
             <View style={styles.card_container3}>
               <View style={styles.title_container}>
-                <View style={styles.date_container}>
-                  <Text style={styles.date}>
-                    {Moment(this.state.current_date).format('D')}
-                  </Text>
-                  <View style={styles.date_container2}>
-                    <Text style={styles.month}>
-                      {Moment(this.state.current_date).format('MMMM')}
+                <TouchableNativeFeedback onPress={this.onChangeDate}>
+                  <View style={styles.date_container}>
+                    <Text style={styles.date}>
+                      {Moment(this.state.current_date, "DD-M-YYYY").format('D')}
                     </Text>
-                    <Text style={styles.day}>
-                      {Moment(this.state.current_date).format('ddd')}
-                    </Text>
+                    <View style={styles.date_container2}>
+                      <Text style={styles.month}>
+                        {Moment(this.state.current_date, "DD-M-YYYY").format('MMMM')}
+                      </Text>
+                      <Text style={styles.day}>
+                        {Moment(this.state.current_date, "DD-M-YYYY").format('ddd')}
+                      </Text>
+                    </View>
                   </View>
-                </View>
+                </TouchableNativeFeedback>
                 <View style={styles.icon_container}>
-                  <View>
+                  <TouchableNativeFeedback onPress={this.onChangeDateBackward}>
                     <Icon name="menu-left" size={36} color="#B488DD" />
-                  </View>
-                  <View>
+                  </TouchableNativeFeedback>
+                  <TouchableNativeFeedback onPress={this.onChangeDateForward}>
                     <Icon name="menu-right" size={36} color="#B488DD" />
-                  </View>
+                  </TouchableNativeFeedback>
                 </View>
               </View>
               <View style={styles.list_container}>

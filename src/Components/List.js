@@ -35,7 +35,7 @@ const List = props => {
 
 const styles = StyleSheet.create({
   list_container: {
-    height: 450,
+    height: 320,
   },
   scroll_view: {
     backgroundColor: '#FFFFFF',
